@@ -1,0 +1,168 @@
+package com.example.smilealarmtask;
+
+import java.util.Calendar;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
+//import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+//import android.content.SharedPreferences;
+//import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TimePicker;
+import android.widget.TextView;
+
+//import android.content.SharedPreferences; 
+
+public class SmileAlarmTask extends Activity {
+
+	private Button mSet;
+	private Button SysSetting;
+	private Button ClockShow;
+	// String StrTime1 = null;//用于显示设置好的闹钟，要import Textview
+	TextView setTime1;
+	String defalutString = "没有活跃闹钟";
+	//private Context context;
+	Calendar mCalendar = Calendar.getInstance();
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		ObjectPool.mAlarmHelper = new AlarmHelper(this); // ObjectPool中只建立了一个AlarmHelper的对象mAlarmHelper
+		//mSet = (Button) findViewById(R.id.mSet);// 从xml中取得按钮的id
+		SysSetting = (Button) findViewById(R.id.SysSetting);// 从xml中取得按钮的id
+		ClockShow = (Button) findViewById(R.id.ClockShow);
+		setTime1 = (TextView) findViewById(R.id.setTime1);
+		//setListener();// 设置事件监听，取得控件
+		// SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
+		// StrTime1 = settings.getString("TIME1", defalutString);
+		// setTime1.setText(StrTime1);
+
+	}
+	/*
+	public void setListener() {
+		mSet.setOnClickListener(new View.OnClickListener() {// 按钮的监听。监听到click后需要调用onclick
+			@Override
+			public void onClick(View v) {
+				mCalendar.setTimeInMillis(System.currentTimeMillis()); // setTimeInMillis输入时间的毫秒数，System.currentTimeMillis产生当前的
+																		// 一个毫秒数
+				int mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+				int mMinute = mCalendar.get(Calendar.MINUTE); // 获取时间的小时和分种，初始化
+				new TimePickerDialog(SmileAlarmTask.this, // TimePickerDialog时间对话框，第1参数
+						new TimePickerDialog.OnTimeSetListener() {// 第二参数，时间对话框设置
+							public void onTimeSet(TimePicker view,
+									int hourOfDay, int minute) {
+								mCalendar.setTimeInMillis(System
+										.currentTimeMillis());
+								mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+								mCalendar.set(Calendar.MINUTE, minute);
+								mCalendar.set(Calendar.SECOND, 0);
+								mCalendar.set(Calendar.MILLISECOND, 0);
+								ObjectPool.mAlarmHelper.openAlarm(1,
+										"SmileAlarm", "time out!!",
+										mCalendar.getTimeInMillis()); // ？？？
+								setTime1.setText(hourOfDay + "：" + minute);
+								// SharedPreferences sp =
+								// SmileAlarmTask.this.getSharedPreferences("SP",
+								// MODE_PRIVATE);
+								// Editor editor = sp.edit();
+								// editor.putInt("Hour", hourOfDay);
+								// editor.putInt("Minute", minute);
+								// ObjectPool.mClockDisplay.changePara(hourOfDay,
+								// minute);
+								// ObjectPool.mClockDisplay.setTimeText(hourOfDay,
+								// minute);
+							}
+						}, mHour, mMinute, true).show(); // 第345参数ture表示24小时制
+			}
+		});*/
+
+		// Button_setting
+		SysSetting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				 Intent intent = new Intent();				 
+				 intent.setClass(SmileAlarmTask.this, ClockSetting.class);
+				 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				 SmileAlarmTask.this.startActivity(intent);
+				 
+				/*
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						SmileAlarmTask.this);
+				builder.setTitle("提示")
+						.setIcon(R.drawable.clock)
+						// ClockDemo\res\drawable-hdpi下的文件
+						.setMessage("Click!")
+						.setPositiveButton("Yeah!",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								}).show();	*/
+			}
+		});
+		
+
+		// Clock_show
+		ClockShow.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(SmileAlarmTask.this, ClockDisplay.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);			
+				startActivity(intent);
+			}
+		});
+
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {// Activity中对“BACK”后退键后的事件监听处理，重写onKeyDown方法
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			showBackDialog(); // 调用下面的showBackDialog函数
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	/** Give the tip when exit the application. */
+	public void showBackDialog() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("提示")
+				.setIcon(R.drawable.clock)
+				// ClockDemo\res\drawable-hdpi下的文件
+				.setMessage("是否退出?")
+				.setPositiveButton("sure", // 文本
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								//TODO save list 
+								System.exit(0); // 退出程序
+								android.os.Process // 成功退出后的操作，apk直接退出，不会再重启。
+										.killProcess(android.os.Process.myPid());
+								dialog.dismiss(); // 对话框消失
+							}
+						})
+				.setNegativeButton("cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+		AlertDialog ad = builder.create();
+		ad.show();// 为builder的对象如下：
+		// new AlertDialog.Builder(self).setTitle("标题")
+		// .setMessage("简单消息框").setPositiveButton("确定", null).show();
+	}
+
+}

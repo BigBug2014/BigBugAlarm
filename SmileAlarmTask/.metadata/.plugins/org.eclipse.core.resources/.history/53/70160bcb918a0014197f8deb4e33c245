@@ -1,0 +1,28 @@
+package com.example.smilealarmtask;
+
+import java.util.ArrayList;  
+import java.util.List;  
+  
+import android.os.Bundle;  
+import android.app.Activity;  
+import android.app.AlertDialog;  
+import android.content.DialogInterface;
+import android.view.Menu;  
+import android.view.View;  
+import android.widget.CheckBox;  
+import android.widget.CompoundButton;  
+import android.widget.Toast;
+import android.view.View.OnClickListener;
+import android.media.*;
+import android.content.*;
+
+public class RingSetting extends Activity {  
+      
+	//Intent intent=new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);   
+    //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);   
+    //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "设置闹铃铃声");   
+    //startActivityForResult(intent, AlarmButton);  
+    
+    //要不要写利用BACK键返回上一级？
+  
+}  

@@ -1,0 +1,51 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"     
+	android:layout_width="fill_parent"    
+ 	android:layout_height="fill_parent"> 
+ 	<!-- 添加一个ListView控件 --> 
+	<TextView
+	    android:id="@+id/text_display"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/clock_setted"
+	    android:textColor="@drawable/lightgreen"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentTop="true"
+	    android:textSize="30sp" />
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_display"
+        android:baselineAligned="false"
+        android:background="#00FF00">
+
+        <ListView
+            android:id="@+id/MyListView"
+            android:layout_width="0dip"
+            android:layout_height="426dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF" >
+
+        </ListView>
+    </LinearLayout>
+ 	<Button
+ 	    android:id="@+id/newClock"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignParentBottom="true"
+ 	    android:layout_alignParentLeft="true"
+ 	    android:text="@string/clock_show"
+ 	    android:textColor="@drawable/azure"
+ 	    android:textSize="20sp" /> 
+ 	
+
+  </RelativeLayout>
+  <Button
+ 	    android:id="@+id/newClock"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_alignParentBottom="true"
+ 	    android:layout_alignParentLeft="true"
+ 	    android:text="@string/clock_show"
+ 	    android:textColor="@drawable/azure"
+ 	    android:textSize="20sp" /> 

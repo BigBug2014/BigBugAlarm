@@ -1,0 +1,24 @@
+[1203/221600:INFO:CONSOLE(786)] "检查设备连接状态:", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (786)
+[1203/221600:INFO:CONSOLE(1196)] "检查已经下载应用", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (1196)
+[1203/221600:INFO:CONSOLE(756)] "检查App下载状态", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (756)
+[1203/221603:INFO:CONSOLE(786)] "检查设备连接状态:", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (786)
+[1205/103140:INFO:CONSOLE(786)] "检查设备连接状态:", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (786)
+[1205/103140:INFO:CONSOLE(1196)] "检查已经下载应用", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (1196)
+[1205/103140:INFO:CONSOLE(756)] "检查App下载状态", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (756)
+[1205/103147:INFO:CONSOLE(786)] "检查设备连接状态:", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (786)
+[1205/103149:INFO:CONSOLE(786)] "检查设备连接状态:", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (786)
+[1205/103149:INFO:CONSOLE(1196)] "检查已经下载应用", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (1196)
+[1205/103149:INFO:CONSOLE(756)] "检查App下载状态", source: http://miassist.app.xiaomi.com/views/v3/dist/js/base.js (756)
+[1205/105227:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/105227:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/105239:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/105239:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115602:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115602:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115602:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115611:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115611:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115614:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115614:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115625:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2
+[1205/115625:INFO:dhcp_proxy_script_adapter_fetcher_win.cc(267)] Error fetching PAC URL from DHCP: 2

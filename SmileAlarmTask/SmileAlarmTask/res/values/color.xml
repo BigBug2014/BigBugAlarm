@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<drawable name="white">#FFFFFFFF</drawable><!--白色 -->
+	<drawable name="black">#000000</drawable>
+	<drawable name="blue">#0000FF</drawable>
+	<drawable name="red">#FF0000</drawable>
+	<drawable name="lightgreen">#7cd12e</drawable>
+	<drawable name="darkgray">#808080FF</drawable>
+	<drawable name="beige">#F5F5DC</drawable><!--米色 --> 
+	<drawable name="azure">#F0FFFF</drawable><!--天蓝色 -->
+	<drawable name="yellow">#FFFF00</drawable><!--黄色 -->
+	<drawable name="bisque">#FFE4C4</drawable><!--桔黄色 -->
+	<drawable name="gold">#FFD700</drawable><!--金色 -->
+	<drawable name="pink">#FFC0CB</drawable><!--粉红色 -->
+</resources>

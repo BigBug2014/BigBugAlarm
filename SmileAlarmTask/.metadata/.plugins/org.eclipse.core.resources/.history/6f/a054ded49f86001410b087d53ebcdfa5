@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top" >
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="21dp"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="121213"
+        android:textSize="30sp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top" >
+
+        <!--
+         <ImageView
+        android:id="@+id/list1"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:src = "@drawable/clock"
+        android:contentDescription="ImageButton"
+        android:padding="2dip" />
+
+     <TextView
+         android:id="@+id/title"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_toRightOf="@+id/list1"
+         android:gravity="center_vertical"
+         android:text = "sadsaf"
+         android:textSize="15sp" />
+        -->
+		<TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/text1"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textSize="30sp" />
+
+        <!-- android:layout_toRightOf="@+id/list1" -->
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:background="@android:color/black" />
+    </RelativeLayout>
+
+    
+
+</RelativeLayout>
+<!-- android:scaleType="fitStart" -->

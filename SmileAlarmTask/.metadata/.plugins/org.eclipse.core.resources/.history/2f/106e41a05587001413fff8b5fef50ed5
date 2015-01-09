@@ -1,0 +1,64 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top" >  
+	  <!--
+         <ImageView
+        android:id="@+id/list1"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:src = "@drawable/clock"
+        android:contentDescription="ImageButton"
+        android:padding="2dip" />
+
+     <TextView
+         android:id="@+id/title"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_toRightOf="@+id/list1"
+         android:gravity="center_vertical"
+         android:text = "sadsaf"
+         android:textSize="15sp" />
+        -->
+
+        <!-- android:layout_toRightOf="@+id/list1" -->
+	    <ImageView
+	        android:id="@+id/ItemImage"
+	        android:layout_alignParentLeft="true" 
+	        android:layout_height="30px"
+	      	android:layout_width="120px"
+	      	android:scaleType="fitStart"
+	        android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />  
+	    <TextView
+	        android:id="@+id/ClockTitle"
+	        android:layout_toRightOf="@+id/ItemImage"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:ellipsize="marquee"
+	        android:singleLine="true"
+	        android:textSize="20sp" />
+	    
+		<TextView
+		    android:id="@+id/info"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/ClockTitle"
+		    android:layout_toRightOf="@+id/ItemImage&quot;s"
+		    android:ellipsize="marquee"
+		    android:singleLine="true"
+		    android:textSize="30sp" />
+	        
+	    <View
+	        android:layout_width="fill_parent"
+	        android:layout_height="3dip"
+	        android:layout_below="@+id/info"
+	        android:background="@android:color/black" />
+
+</RelativeLayout>

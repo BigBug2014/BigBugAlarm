@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top" >
+
+    <!--
+         <ImageView
+        android:id="@+id/list1"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:src = "@drawable/clock"
+        android:contentDescription="ImageButton"
+        android:padding="2dip" />
+    -->
+
+    <ImageView
+        android:id="@+id/ItemImage"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_alignBottom="@+id/view1"
+        android:layout_alignParentLeft="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/clock_icon2" />
+
+    <TextView
+        android:id="@+id/ClockTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/ItemImage"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textColor="@drawable/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ClockTitle"
+        android:layout_toRightOf="@+id/ItemImage"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textColor="@drawable/black"
+        android:textSize="30sp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="3dip"
+        android:layout_below="@+id/info"
+        android:background="@android:color/black" />
+
+</RelativeLayout>

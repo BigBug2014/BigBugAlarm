@@ -1,0 +1,239 @@
+package com.example.smilealarmtask;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facepp.error.FaceppParseException;
+import com.facepp.http.HttpRequests;
+import com.facepp.http.PostParameters;
+
+
+import android.R.bool;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class FaceUnlock extends Activity{
+	
+	public static final int TAKE_PHOTO=1;
+	public static final int CROP_PHOTO=2;
+	private ImageView picture;
+	private Button takePhoto;
+	private Button detectPhoto;	
+	private Uri imageUri;
+	private TextView textView = null;
+	Bitmap img=null;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.second_layout);
+		
+		takePhoto=(Button)findViewById(R.id.take_photo);
+		picture=(ImageView)findViewById(R.id.picture);	
+		
+		takePhoto.setOnClickListener(new OnClickListener(){	
+			@Override
+			public void onClick(View v) {
+				File outputImageFile = new File(Environment.getExternalStorageDirectory(),"tempImage.jpg");
+				try{
+					if(outputImageFile.exists()){
+						outputImageFile.delete();
+					}
+					outputImageFile.createNewFile();
+				} catch(IOException e){
+					e.printStackTrace();
+				}
+				imageUri=Uri.fromFile(outputImageFile);
+				Intent intent=new Intent("android.media.action.IMAGE_CAPTURE");
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+				startActivityForResult(intent, TAKE_PHOTO);			
+				//Toast.makeText(SecondActivity.this, "hahaha", Toast.LENGTH_LONG).show();
+			}
+		});
+		
+		textView = (TextView)this.findViewById(R.id.textView_state);
+		
+		detectPhoto = (Button)this.findViewById(R.id.detect_photo);
+		detectPhoto.setVisibility(View.INVISIBLE);
+		detectPhoto.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				
+				textView.setText("Waiting ...");
+				
+				FaceppDetect faceppDetect = new FaceppDetect();
+				faceppDetect.setDetectCallback(new DetectCallback() {
+					
+					public void detectResult(JSONObject rst) {		//after detect
+						Log.v("result", rst.toString());
+
+						//use the red paint
+						Paint paint = new Paint();
+						paint.setColor(Color.RED);
+						paint.setStrokeWidth(Math.max(img.getWidth(), img.getHeight()) / 100f);
+
+						//create a new canvas
+						Bitmap bitmap = Bitmap.createBitmap(img.getWidth(), img.getHeight(), img.getConfig());
+						Canvas canvas = new Canvas(bitmap);
+						canvas.drawBitmap(img, new Matrix(), null);
+						int numSmile=0;
+						float cofMax=0;
+						try {
+							//find out all faces
+							final int count = rst.getJSONArray("face").length();
+							for (int i = 0; i < count; ++i) {
+								float x, y, w, h,cof;
+								//get the center point
+								cof= (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("attribute").getJSONObject("smiling").getDouble("value");
+								cofMax=cof>cofMax?cof:cofMax;
+								
+								x = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getJSONObject("center").getDouble("x");
+								y = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getJSONObject("center").getDouble("y");
+
+								//get face size
+								w = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getDouble("width");
+								h = (float)rst.getJSONArray("face").getJSONObject(i)
+										.getJSONObject("position").getDouble("height");
+								
+								//change percent value to the real size
+								x = x / 100 * img.getWidth();
+								w = w / 100 * img.getWidth() * 0.7f;
+								y = y / 100 * img.getHeight();
+								h = h / 100 * img.getHeight() * 0.7f;
+
+								//draw the box to mark it out
+								canvas.drawLine(x - w, y - h, x - w, y + h, paint);
+								canvas.drawLine(x - w, y - h, x + w, y - h, paint);
+								canvas.drawLine(x + w, y + h, x - w, y + h, paint);
+								canvas.drawLine(x + w, y + h, x + w, y - h, paint);
+							}
+							
+							//save new image
+							img = bitmap;
+							final float temp=cofMax;
+							FaceUnlock.this.runOnUiThread(new Runnable() {
+									
+								public void run() {
+									//show the image
+									picture.setImageBitmap(img);
+									
+									textView.setText("Finished, "+ count + " faces.Smiling:"+temp);
+								}
+							});						
+						} catch (JSONException e) {
+							e.printStackTrace();
+							FaceUnlock.this.runOnUiThread(new Runnable() {
+								public void run() {
+									textView.setText("Error.");
+								}
+							});
+						}
+						
+					}
+				});
+				faceppDetect.detect(img);
+			}
+		});
+	}
+	
+	@Override
+	protected void onActivityResult (int requestCode,int resultCode,Intent data){
+		switch(requestCode){
+		case TAKE_PHOTO:
+			if(resultCode==RESULT_OK){
+				try{
+					img=BitmapFactory.decodeStream
+							(getContentResolver().openInputStream(imageUri));
+					picture.setImageBitmap(img);//show
+					textView.setText("Clik Detect.");
+					detectPhoto.setVisibility(View.VISIBLE);
+				}catch(FileNotFoundException e){
+					e.printStackTrace();
+				}
+			}
+			break;
+		default:
+			break;
+		}	
+	}
+	
+	
+	
+	
+    private class FaceppDetect {
+    	DetectCallback callback = null;
+    	
+    	public void setDetectCallback(DetectCallback detectCallback) { 
+    		callback = detectCallback;
+    	}
+
+    	public void detect(final Bitmap image) {
+    		
+    		new Thread(new Runnable() {
+				
+				public void run() {
+					HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M", true, false);
+		    		//Log.v(TAG, "image size : " + img.getWidth() + " " + img.getHeight());
+		    		
+		    		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		    		float scale = Math.min(1, Math.min(600f / img.getWidth(), 600f / img.getHeight()));
+		    		Matrix matrix = new Matrix();
+		    		matrix.postScale(scale, scale);
+
+		    		Bitmap imgSmall = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, false);
+		    		//Log.v(TAG, "imgSmall size : " + imgSmall.getWidth() + " " + imgSmall.getHeight());
+		    		
+		    		imgSmall.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		    		byte[] array = stream.toByteArray();
+		    		
+		    		try {
+		    			//detect
+						JSONObject result = httpRequests.detectionDetect(new PostParameters().setImg(array));
+						//finished , then call the callback function
+						if (callback != null) {
+							callback.detectResult(result);
+						}
+					} catch (FaceppParseException e) {
+						e.printStackTrace();
+						FaceUnlock.this.runOnUiThread(new Runnable() {
+							public void run() {
+								textView.setText("Network error.");
+							}
+						});
+					}
+					
+				}
+			}).start();
+    	}
+    }
+
+    interface DetectCallback {
+    	void detectResult(JSONObject rst);
+	}
+}

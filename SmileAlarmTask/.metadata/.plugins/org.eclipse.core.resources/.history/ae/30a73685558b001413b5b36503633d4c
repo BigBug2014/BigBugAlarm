@@ -1,0 +1,44 @@
+package com.example.smilealarmtask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+//import android.os.Bundle;
+//import了广播broadcast
+import android.util.Log;
+
+public class CallAlarm extends BroadcastReceiver { // 当BroadcastReceiver接收到广播后，就会去执行OnReceive()方法
+	@Override
+	// 通过override实现我们需要的功能
+	public void onReceive(Context context, Intent intent) {
+		// 打开新的activity——AlarmAlert
+		int id =Integer.parseInt(intent.getStringExtra("_id"));  
+		Log.w("TAG","闹钟传参，id="+id);
+		//TODO list中位置为id的map的删除操作,只能在activity中获取list
+		GlobalVariable application = (GlobalVariable)this.getApplication(); 
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		list = ((GlobalVariable)getApplication()).getList();//取出变量
+		Map<String, Object> TempMap = new HashMap<String, Object>();
+		for(int i=0; i<list.size();i++){
+			TempMap = list.get(i);
+			TempMap.put("title", "闹钟"+(i+1));
+			list.set(i, TempMap);
+		}
+		((GlobalVariable)getApplication()).setList(list); //保存变量 
+		intent.putExtra("_id", value)
+		intent.setClass(context, AlarmAlert.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//或者是 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);也是可以的
+		context.startActivity(intent);
+	}
+}
+// 注意：创建完BroadcastReceiver后，需要在AndroidManifest.xml中注册：
+// <receiver android:name=".MyReceiver">
+// <intent-filter>
+// <action android:name= "com.Reminder.MyReceiver" />
+// </intent-filter>
+// </receiver>

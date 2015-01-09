@@ -1,0 +1,225 @@
+package com.example.smilealarmtask;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+//import java.util.List;
+import java.util.Map;
+import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.view.View.OnClickListener;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+public class ClockDisplay extends Activity {
+	Calendar mCalendar = Calendar.getInstance();
+	private ListView mListView = null;
+	private Button SysSetting;
+	// MyListAdapter myAdapter = null;
+	GlobalVariable application = (GlobalVariable)this.getApplication(); 
+	//ArrayList<Map<String, Object>> list = application.getList();//取出变量 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.w("TAG", "打开display"); // 调试信息
+		setContentView(R.layout.display);
+		// mListView.setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> adapterView, View view, int
+		// position,
+		// long id) {
+		// Toast.makeText(IconList.this,"您选择了标题：" + mListTitle[position] +
+		// "内容："+mListStr[position], Toast.LENGTH_LONG).show();
+		// }
+		// });
+		SysSetting = (Button) findViewById(R.id.newClock);// 从xml中取得按钮的id
+		mListView = (ListView) findViewById(R.id.MyListView);
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		list = ((GlobalVariable)getApplication()).getList();//取出变量 
+		SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.mylist,
+				//new String[] { "image" ,"title" ,"info" }, new int[] { R.id.ItemImage, R.id.ClockTitle ,R.id.info });
+				new String[] {"title" ,"info" }, new int[] {R.id.ClockTitle ,R.id.info });
+		mListView.setAdapter(adapter);
+		//setAdapter(adapter);
+		//Button button = new Button(this);
+		//button.setText("添加新闹钟");
+		//FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+		//		FrameLayout.LayoutParams.MATCH_PARENT,
+		//		FrameLayout.LayoutParams.WRAP_CONTENT);
+		//lp.gravity = Gravity.BOTTOM;
+		//addContentView(button, lp);// 这个是重点
+		//---
+		//---
+		//((GlobalVariable)getApplication()).setList(list);
+		//button.setOnClickListener(new OnClickListener() {
+		SysSetting.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				mCalendar.setTimeInMillis(System.currentTimeMillis());
+				int mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+				int mMinute = mCalendar.get(Calendar.MINUTE);
+				new TimePickerDialog(ClockDisplay.this,
+						new TimePickerDialog.OnTimeSetListener() {
+							public void onTimeSet(TimePicker view,
+									int hourOfDay, int minute) {
+								mCalendar.setTimeInMillis(System
+										.currentTimeMillis());
+								mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+								mCalendar.set(Calendar.MINUTE, minute);
+								mCalendar.set(Calendar.SECOND, 0);
+								mCalendar.set(Calendar.MILLISECOND, 0);
+								ObjectPool.mAlarmHelper.openAlarm(1,
+										"SmileAlarm", "time out!!",
+										mCalendar.getTimeInMillis());
+								addList(hourOfDay, minute);
+							}
+						}, mHour, mMinute, true).show();
+			}
+		});
+	}
+
+	public void addList(int hour, int minute) {
+		Map<String, Object> item = new Map<String, Object>();
+		// new int[]{R.id.list1,R.id.title,R.id.info});
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		list = ((GlobalVariable)getApplication()).getList();//取出变量 
+		SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.display,
+				new String[] { "image", "title" ,"info" }, new int[] { R.id.ItemImage, R.id.ClockTitle ,R.id.info });
+		mListView.setAdapter(adapter);
+		String tmps;
+		if(minute>=0 && minute<=9){
+			tmps = String.valueOf(hour) + ":0" + String.valueOf(minute);
+		}else{
+			tmps = String.valueOf(hour) + ":" + String.valueOf(minute);
+		}
+		item.put("image", R.drawable.clock_icon2);
+		item.put("title", "闹钟"+(list.size()+1));
+		item.put("info", tmps);	
+		int FlagToAdd =0;
+		int cnt = 0;
+		int order = -1;
+		boolean done = false;
+		for (Map<String, Object> i : list){
+			String strHour, strMin;
+			for (String k : i.keySet())  {//得到map所有的key
+		         //System.out.println(k + " : " + m.get(k));   //遍历key
+				 String strTime = (String)i.get(k);
+				 int mHour =-1, mMin = -1;
+				 if(strTime ==getString(R.string.clock_setted)) {continue;}//list标题
+				 for(int j = 0;j<strTime.length();j++){				   	  
+						if(strTime.charAt(j) == ':'){
+							strHour = strTime.substring(0,j);
+							strMin = strTime.substring(j+1);					
+							mHour=Integer.parseInt(strHour);
+							mMin=Integer.parseInt(strMin);
+							break;
+						}
+				 }
+				//做排序比较，用item存储读取到的值
+				//读入hour minute
+				if(hour < mHour){
+					//add to list
+					if(list != null){
+						FlagToAdd = 1;//h小，直接添加
+						order = cnt;
+					    //list.add(item);
+					    //Log.w("TAG", "添加成功1"); // 调试信息
+					    //((GlobalVariable)getApplication()).setList(list); //保存变量 
+						// Toast提示设置已完成
+						//Toast.makeText(ClockDisplay.this, "设置闹钟时间为" + tmps, Toast.LENGTH_SHORT).show();
+						done = true;
+						break;
+					}else{
+						Log.w("TAG", "list is empty2"); // 调试信息	
+					}
+				} else if(hour == mHour){
+					if(minute < mMin){
+						//add to list 
+						if(list != null){
+							FlagToAdd = 2;//h相同m小，直接添加
+							order = cnt;
+						    //list.add(item);//不应该顺序插入
+						    //Log.w("TAG", "添加成功2"); // 调试信息
+						    //((GlobalVariable)getApplication()).setList(list); //保存变量 
+							// Toast提示设置已完成
+							//Toast.makeText(ClockDisplay.this, "设置闹钟时间为" + tmps, Toast.LENGTH_SHORT).show();
+							done = true;
+							break;
+						}else{
+							//FlagToAdd = 3;//直接添加在最后
+							Log.w("TAG", "list is empty3"); // 调试信息
+							
+						}
+					}else if(minute == mMin){
+						FlagToAdd = 3;//时间相同添加失败
+						done = true;
+						//Toast.makeText(ClockDisplay.this, "该时间已经存在一个闹钟\n    设置失败", Toast.LENGTH_SHORT).show();
+						break;
+					}else{
+						//next loop
+						//length--;
+						continue;
+					}									
+				}else{  
+					//next loop
+					//length--;
+					continue;
+				} 				
+			}//两重循环结束处
+			if(done){
+				done = false;
+				break;
+			}
+			else{
+				cnt++;
+			}
+		}
+		//同一在这里修改list
+		switch(FlagToAdd){
+			case 0:{//没有修改过,直接在最后添加
+				list.add(item);
+				Log.w("TAG", "添加成功"+FlagToAdd); // 调试信息
+				((GlobalVariable)getApplication()).setList(list); //保存变量 
+				Toast.makeText(ClockDisplay.this, "设置闹钟时间为" + tmps, Toast.LENGTH_SHORT).show();
+				break;}
+			case 1:{//h小
+				Log.w("TAG", "添加成功"+FlagToAdd+order);
+				Map<String, Object> TempMap = new HashMap<String, Object>();
+				TempMap = list.get(list.size()-1);
+				list.add(TempMap);
+				for(int i=list.size()-2;i>order;i--){
+			    	list.set(i, list.get(i-1));
+			    }
+				list.set(order, item);
+				break;
+			}
+			case 2:{//h一样m小
+				Log.w("TAG", "添加成功"+FlagToAdd+order);
+				Map<String, Object> TempMap = new HashMap<String, Object>();
+				TempMap = list.get(list.size()-1);
+				list.add(TempMap);
+				for(int i=list.size()-2;i>order;i--){
+			    	list.set(i, list.get(i-1));
+			    }
+				list.set(order, item);
+				break;
+			}
+			case 3:{//时间相同添加失败
+				Log.w("TAG", "添加成功"+FlagToAdd);
+				Toast.makeText(ClockDisplay.this, "该时间已经存在一个闹钟\n\t\t设置失败", Toast.LENGTH_SHORT).show();
+				break;
+			}
+			default:{
+				Log.w("TAG", "FlagToAdd--Error");break;
+			}
+		}	
+			
+	}	
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smilealarmtask"
+    android:versionCode="3"
+    android:versionName="2.5.0" >
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21"/>
+         
+
+    <application
+        android:name=".GlobalVariable" 
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".SmileAlarmTask"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".CallAlarm" />
+        <activity android:name=".AlarmAlert" android:label="@string/app_name" />
+        <activity android:name=".ClockDisplay"  />
+        <activity android:name=".DefaultMode"	/>
+        <activity android:name=".Blank"  		/>
+        <activity android:name=".ClockSetting"  />
+        <activity android:name=".InfoSoftware"  />
+        <activity android:name=".ModeSetting"  />
+        <activity android:name=".RingSetting"  />
+        <activity android:name=".TimeHandler" />
+        <activity android:name=".UnlockTask" />
+         <activity 
+            android:name=".FaceUnlock"
+            android:label="This is myworld"
+            android:screenOrientation="portrait">
+        </activity>
+    </application>
+
+</manifest>
+
+
+

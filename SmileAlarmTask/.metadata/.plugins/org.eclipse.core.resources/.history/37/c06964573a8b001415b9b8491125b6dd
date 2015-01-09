@@ -1,0 +1,26 @@
+package com.example.smilealarmtask;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+//import了广播broadcast
+
+public class CallAlarm extends BroadcastReceiver { // 当BroadcastReceiver接收到广播后，就会去执行OnReceive()方法
+	@Override
+	// 通过override实现我们需要的功能
+	public void onReceive(Context context, Intent intent) {
+		// 打开新的activity——AlarmAlert
+		intent = getIntent();
+		intent.setClass(context, AlarmAlert.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);// 或者是
+														// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);也是可以的
+		context.startActivity(intent);
+	}
+}
+// 注意：创建完BroadcastReceiver后，需要在AndroidManifest.xml中注册：
+// <receiver android:name=".MyReceiver">
+// <intent-filter>
+// <action android:name= "com.Reminder.MyReceiver" />
+// </intent-filter>
+// </receiver>
